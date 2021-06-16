@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace CursoUdemy
 {
@@ -31,8 +32,8 @@ namespace CursoUdemy
         {
             services.AddControllers();
 
-            var connection = Configuration.GetConnectionString("MySqlConnectionString");
-            services.AddDbContext<MySqlContext>(options => options.UseMySql(connectionString: connection, serverVersion: null));
+            var connectionString = Configuration.GetConnectionString("MySqlConnectionString");
+            services.AddDbContext<MySqlContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
             //DI
             services.AddScoped<IPersonService, PersonServiceImplementation>();

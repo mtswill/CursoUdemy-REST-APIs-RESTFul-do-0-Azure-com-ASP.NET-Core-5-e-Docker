@@ -7,11 +7,8 @@ namespace CursoUdemy.Models.Context
         protected MySqlContext()
         {
         }
-        
-        protected MySqlContext(DbContextOptions<MySqlContext> options)
-            : base(options)
-        {
-        }
+
+        public MySqlContext(DbContextOptions<MySqlContext> options) : base(options) { }
 
         public DbSet<Person> People { get; set; }
     }
