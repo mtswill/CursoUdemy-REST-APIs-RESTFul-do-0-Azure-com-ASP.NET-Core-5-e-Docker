@@ -1,4 +1,5 @@
 ﻿using CursoUdemy.Models;
+using CursoUdemy.Models.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,12 @@ namespace CursoUdemy.Services.Implementations
 {
     public class PersonServiceImplementation : IPersonService
     {
-        private volatile int count;
+        private MySqlContext _context;
+
+        public PersonServiceImplementation(MySqlContext context)
+        {
+            _context = context;
+        }
 
         public Person Create(Person person)
         {
@@ -22,21 +28,14 @@ namespace CursoUdemy.Services.Implementations
 
         public List<Person> FindAll()
         {
-            var people = new List<Person>();
-
-            for (int i = 0; i < 8; i++)
-            {
-                people.Add(MockPerson(i));
-            }
-
-            return people;
+            return _context.People.ToList();
         }
 
         public Person FindById(long id)
         {
             return new Person
             {
-                Id = IncrementAndGet(),
+                Id = 1,
                 FirstName = "Matheus",
                 LastName = "Polato",
                 Address = "Bauru, SP",
@@ -47,23 +46,6 @@ namespace CursoUdemy.Services.Implementations
         public Person Update(Person person)
         {
             return person;
-        }
-
-        private Person MockPerson(int i)
-        {
-            return new Person
-            {
-                Id = IncrementAndGet(),
-                FirstName = "Person Name" + i,
-                LastName = "Person LastName" + i,
-                Address = "Some Address" + i,
-                Gender = "Male"
-            };
-        }
-
-        private long IncrementAndGet()
-        {
-            return Interlocked.Increment(ref count);
         }
     }
 }
