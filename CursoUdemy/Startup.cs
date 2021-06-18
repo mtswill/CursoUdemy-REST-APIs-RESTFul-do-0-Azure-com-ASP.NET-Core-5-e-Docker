@@ -35,6 +35,9 @@ namespace CursoUdemy
             var connectionString = Configuration.GetConnectionString("MySqlConnectionString");
             services.AddDbContext<MySqlContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
+            //Versioning API
+            services.AddApiVersioning();
+
             //DI
             services.AddScoped<IPersonService, PersonServiceImplementation>();
 
