@@ -18,17 +18,22 @@ using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using CursoUdemy.Business;
 using CursoUdemy.Repository;
 using CursoUdemy.Repository.Implementations;
+using Serilog;
 
 namespace CursoUdemy
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public IConfiguration Configuration { get; }
+        public IWebHostEnvironment Environment { get; }
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
-        }
+            Environment = environment;
 
-        public IConfiguration Configuration { get; }
+            Log.Logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -37,6 +42,11 @@ namespace CursoUdemy
 
             var connectionString = Configuration.GetConnectionString("MySqlConnectionString");
             services.AddDbContext<MySqlContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+
+            if (Environment.IsDevelopment())
+            {
+                MigrateDatabase(connectionString);
+            }
 
             //Versioning API
             services.AddApiVersioning();
@@ -71,6 +81,30 @@ namespace CursoUdemy
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private void MigrateDatabase(string connectionString)
+        {
+            try
+            {
+                var evolveConnection = new MySql.Data.MySqlClient.MySqlConnection(connectionString);
+                var evolve = new Evolve.Evolve(evolveConnection, msg => Log.Information(msg))
+                {
+                    Locations = new List<string>
+                    {
+                        "db/migrations",
+                        "db/dataset"
+                    },
+                    IsEraseDisabled = true
+                };
+
+                evolve.Migrate();
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Database migration failed", ex);
+                throw;
+            }
         }
     }
 }
