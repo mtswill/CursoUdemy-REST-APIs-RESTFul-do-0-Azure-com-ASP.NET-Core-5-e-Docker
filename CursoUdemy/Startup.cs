@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CursoUdemy.Models.Context;
-using CursoUdemy.Services.Implementations;
+using CursoUdemy.Business.Implementations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -15,6 +15,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using CursoUdemy.Business;
+using CursoUdemy.Repository;
+using CursoUdemy.Repository.Implementations;
 
 namespace CursoUdemy
 {
@@ -39,7 +42,8 @@ namespace CursoUdemy
             services.AddApiVersioning();
 
             //DI
-            services.AddScoped<IPersonService, PersonServiceImplementation>();
+            services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
+            services.AddScoped<IPersonRepository, PersonRespositoryImplementation>();
 
             services.AddSwaggerGen(c =>
             {

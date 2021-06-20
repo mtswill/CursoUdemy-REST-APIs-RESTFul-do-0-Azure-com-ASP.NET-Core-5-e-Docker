@@ -6,13 +6,13 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CursoUdemy.Services.Implementations
+namespace CursoUdemy.Repository.Implementations
 {
-    public class PersonServiceImplementation : IPersonService
+    public class PersonRespositoryImplementation : IPersonRepository
     {
         private MySqlContext _context;
 
-        public PersonServiceImplementation(MySqlContext context)
+        public PersonRespositoryImplementation(MySqlContext context)
         {
             _context = context;
         }
@@ -81,7 +81,7 @@ namespace CursoUdemy.Services.Implementations
             }
         }
 
-        private bool Exists(long id)
+        public bool Exists(long id)
         {
             return _context.People.Any(p => p.Id.Equals(id));
         }

@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CursoUdemy.Models;
-using CursoUdemy.Services.Implementations;
+using CursoUdemy.Business.Implementations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using CursoUdemy.Business;
 
 namespace CursoUdemy.Controllers
 {
@@ -15,24 +16,24 @@ namespace CursoUdemy.Controllers
     public class PersonController : ControllerBase
     {
         private readonly ILogger<CalculatorController> _logger;
-        private IPersonService _personService;
+        private IPersonBusiness _personBusiness;
 
-        public PersonController(ILogger<CalculatorController> logger, IPersonService personService)
+        public PersonController(ILogger<CalculatorController> logger, IPersonBusiness personBusiness)
         {
             _logger = logger;
-            _personService = personService;
+            _personBusiness = personBusiness;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_personService.FindAll());
+            return Ok(_personBusiness.FindAll());
         }
         
         [HttpGet("{id}")]
         public IActionResult Get(long id)
         {
-            var person = _personService.FindById(id);
+            var person = _personBusiness.FindById(id);
 
             if (person == null)
                 return NotFound();
@@ -46,7 +47,7 @@ namespace CursoUdemy.Controllers
             if (person == null)
                 return BadRequest();
 
-            return Ok(_personService.Create(person));
+            return Ok(_personBusiness.Create(person));
         }
         
         [HttpPut]
@@ -55,13 +56,13 @@ namespace CursoUdemy.Controllers
             if (person == null)
                 return BadRequest();
 
-            return Ok(_personService.Update(person));
+            return Ok(_personBusiness.Update(person));
         }
         
         [HttpDelete("{id}")]
         public IActionResult Delete(long id)
         {
-            _personService.Delete(id);
+            _personBusiness.Delete(id);
             return NoContent();
         }
     }
