@@ -17,8 +17,8 @@ using Microsoft.OpenApi.Models;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using CursoUdemy.Business;
 using CursoUdemy.Repository;
-using CursoUdemy.Repository.Implementations;
 using Serilog;
+using CursoUdemy.Repository.Generic;
 
 namespace CursoUdemy
 {
@@ -53,7 +53,7 @@ namespace CursoUdemy
 
             //DI
             services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
-            services.AddScoped<IPersonRepository, PersonRespositoryImplementation>();
+            services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 
             services.AddSwaggerGen(c =>
             {

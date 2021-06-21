@@ -15,10 +15,10 @@ namespace CursoUdemy.Controllers
     [Route("api/[controller]/v{version:apiVersion}")]
     public class PersonController : ControllerBase
     {
-        private readonly ILogger<CalculatorController> _logger;
+        private readonly ILogger<PersonController> _logger;
         private IPersonBusiness _personBusiness;
 
-        public PersonController(ILogger<CalculatorController> logger, IPersonBusiness personBusiness)
+        public PersonController(ILogger<PersonController> logger, IPersonBusiness personBusiness)
         {
             _logger = logger;
             _personBusiness = personBusiness;
