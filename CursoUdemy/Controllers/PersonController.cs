@@ -7,6 +7,7 @@ using CursoUdemy.Business.Implementations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using CursoUdemy.Business;
+using CursoUdemy.Data.VO;
 
 namespace CursoUdemy.Controllers
 {
@@ -42,7 +43,7 @@ namespace CursoUdemy.Controllers
         }
         
         [HttpPost]
-        public IActionResult Post([FromBody] Person person)
+        public IActionResult Post([FromBody] PersonVO person)
         {
             if (person == null)
                 return BadRequest();
@@ -51,7 +52,7 @@ namespace CursoUdemy.Controllers
         }
         
         [HttpPut]
-        public IActionResult Put([FromBody] Person person)
+        public IActionResult Put([FromBody] PersonVO person)
         {
             if (person == null)
                 return BadRequest();
