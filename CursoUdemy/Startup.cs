@@ -20,6 +20,8 @@ using CursoUdemy.Repository;
 using Serilog;
 using CursoUdemy.Repository.Generic;
 using Microsoft.Net.Http.Headers;
+using CursoUdemy.Hypermedia.Filters;
+using CursoUdemy.Hypermedia.Enricher;
 
 namespace CursoUdemy
 {
@@ -56,6 +58,11 @@ namespace CursoUdemy
                 options.FormatterMappings.SetMediaTypeMappingForFormat("json", MediaTypeHeaderValue.Parse("application/json"));
             }).AddXmlSerializerFormatters();
 
+            var filterOptions = new HyperMediaFilterOptions();
+            filterOptions.ContentResponseEnricherList.Add(new PersonEnricher());
+
+            services.AddSingleton(filterOptions);
+
             //Versioning API
             services.AddApiVersioning();
 
@@ -88,6 +95,7 @@ namespace CursoUdemy
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapControllerRoute("DefaultApi", "{controller=values}/{id?}");
             });
         }
 

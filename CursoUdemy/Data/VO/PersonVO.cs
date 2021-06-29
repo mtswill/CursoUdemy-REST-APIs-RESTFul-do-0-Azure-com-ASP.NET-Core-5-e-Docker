@@ -1,4 +1,6 @@
-﻿using CursoUdemy.Models.Base;
+﻿using CursoUdemy.Hypermedia;
+using CursoUdemy.Hypermedia.Abstract;
+using CursoUdemy.Models.Base;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -7,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CursoUdemy.Data.VO
 {
-    public class PersonVO
+    public class PersonVO : ISupportsHyperMedia
     {
         public long Id { get; set; }
 
@@ -18,5 +20,7 @@ namespace CursoUdemy.Data.VO
         public string Address { get; set; }
 
         public string Gender { get; set; }
+
+        public List<HyperMediaLink> Links { get; set; } = new List<HyperMediaLink>();
     }
 }
